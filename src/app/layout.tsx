@@ -1,57 +1,59 @@
 import type { Metadata } from "next";
-import { Lato } from "next/font/google";
+import { Source_Code_Pro, Maven_Pro } from "next/font/google";
+import { config } from "@fortawesome/fontawesome-svg-core";
 import "./globals.css";
-import Nav from "./components/Nav";
-import Footer from "./components/Footer";
+import Nav from "../components/shared/Nav";
+import Footer from "../components/shared/Footer";
 import Head from "next/head";
 import NextTopLoader from "nextjs-toploader";
+import ScrollTop from "@/components/ui/ScrollTop";
+import AOSWrapper from "@/components/shared/AOSWrapper";
 
-const latoSans = Lato({
-  variable: "--font-lato-sans",
+config.autoAddCss = false;
+
+const sourceCodePro = Source_Code_Pro({
+  subsets: ["latin"],
   weight: ["400", "700"],
   display: "swap",
+  variable: "--font-heading",
+});
+
+const mavenPro = Maven_Pro({
   subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+  variable: "--font-body",
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://hallofcodes.github.io"),
+  metadataBase: new URL("https://hallofcodes.vercel.app"),
   title: "Hall of Codes - Merging Programmers Beyond Conflicts",
   description:
-    "Be part of a vibrant community where innovation thrives and collaboration is key.",
+    "We revolutionize development by fostering cohesion among teams, transcending conflicts to drive collective innovation. Harnessing the synergy of diverse talents, we pave the way for seamless collaboration, ensuring projects thrive in an environment of unity and progress.",
   keywords: [
     "Hall of Codes",
-    "programming",
+    "programming community",
+    "developers",
     "collaboration",
-    "community",
     "innovation",
     "open source",
+    "technology",
     "software development",
-    "tech community",
-    "developer community",
-    "programmer collaboration",
-    "coding",
-    "software projects",
-    "teamwork",
-    "conflict resolution",
-    "synergy",
-    "collective innovation",
-    "diverse talents",
-    "seamless collaboration",
-    "unity",
-    "progress",
-    "merging programmers",
-    "conflict-free development",
-    "project management",
   ],
+  authors: [{ name: "Melvin Jones Repol", url: "https://mrepol742.github.io" }],
+  creator: "Melvin Jones Repol",
+  alternates: {
+    canonical: "https://hallofcodes.vercel.app/",
+  },
   openGraph: {
     title: "Hall of Codes - Merging Programmers Beyond Conflicts",
     description:
-      "Be part of a vibrant community where innovation thrives and collaboration is key.",
-    url: "https://hallofcodes.github.io/",
+      "We revolutionize development by fostering cohesion among teams, transcending conflicts to drive collective innovation. Harnessing the synergy of diverse talents, we pave the way for seamless collaboration, ensuring projects thrive in an environment of unity and progress.",
+    url: "https://hallofcodes.vercel.app/",
     siteName: "Hall of Codes",
     images: [
       {
-        url: "https://hallofcodes.github.io/cover.jpg",
+        url: "https://hallofcodes.vercel.app/cover.jpg",
         width: 1200,
         height: 630,
         alt: "Hall of Codes Logo",
@@ -64,10 +66,10 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Hall of Codes - Merging Programmers Beyond Conflicts",
     description:
-      "Be part of a vibrant community where innovation thrives and collaboration is key.",
+      "We revolutionize development by fostering cohesion among teams, transcending conflicts to drive collective innovation. Harnessing the synergy of diverse talents, we pave the way for seamless collaboration, ensuring projects thrive in an environment of unity and progress.",
     images: [
       {
-        url: "https://hallofcodes.github.io/cover.jpg",
+        url: "https://hallofcodes.vercel.app/cover.jpg",
         width: 1200,
         height: 630,
         alt: "Hall of Codes Logo",
@@ -87,14 +89,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={`${sourceCodePro.variable} ${mavenPro.variable}`}
+    >
       <Head>
-        <meta name="hostname" content="hallofcodes.github.io" />
+        <meta name="hostname" content="hallofcodes.vercel.app" />
       </Head>
-      <body className={`${latoSans.variable} antialiased`}>
+      <body className="antialiased">
+        <AOSWrapper />
         <Nav />
-        <NextTopLoader showSpinner={false} color="#FF6600" />
-        <main className="bg-white dark:bg-gray-900 px-4">{children}</main>
+
+        <NextTopLoader showSpinner={false} />
+
+        <main>{children}</main>
+
+        <ScrollTop />
+
         <Footer />
       </body>
     </html>
