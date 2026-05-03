@@ -1,48 +1,27 @@
 import Link from "next/link";
+import { getMembers, Member } from "@/lib/github/members";
+import { getRepositories, Repo } from "@/lib/github/repositories";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPerson, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
+import ScrambleText from "@/components/ui/ScrambleText";
+import ProjectCard from "@/components/ui/ProjectCard";
+import MemberCard from "@/components/ui/MemberCard";
+import timeline, { TimelineEntry } from "@/lib/timeline";
+import TimelineCard from "@/components/ui/TimelineCard";
 
-const timeline = [
-  {
-    date: "Sometime in 2019",
-    heading: "This group has been established",
-    description:
-      "It's former name was Android Developer then after 2 more years it was changed to Google Developers",
-  },
-  {
-    date: "Sometime in 2021",
-    heading: "The community has been rebranded to Hall of Codes",
-    description: "Till this day the group is still thriving and active",
-  },
-  {
-    date: "November 2021",
-    heading: "Hall of Codes first Github Org",
-    description: "",
-  },
-  {
-    date: "December 2021",
-    heading: "Hall of Codes first Facebook Page",
-    description: "As of now it has 4.5K likes and followers",
-  },
-  {
-    date: "July 2025",
-    heading: "Hall of Codes is now at WhatsApp",
-    description:
-      "We are now at WhatsApp, you can join us at https://chat.whatsapp.com/J6JINAjxNmF9Dn1ETCteGA",
-  },
-  {
-    date: "August 2025",
-    heading: "Migrate Hall of Codes site to Next.js",
-    description:
-      "We are now using Next.js for our site, which is more performant and SEO friendly",
-  },
-];
+export default async function Home() {
+  const [members, repositories] = await Promise.all([
+    getMembers(),
+    getRepositories(),
+  ]);
 
-export default function Home() {
   const organization = {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "Hall of Codes",
-    url: "https://hallofcodes.github.io",
-    logo: "https://hallofcodes.github.io/hoc-icon.png",
+    url: "https://hallofcodes.vercel.app",
+    logo: "https://hallofcodes.vercel.app/hoc-icon.png",
     sameAs: [
       "https://www.facebook.com/hallofcodes",
       "https://github.com/hallofcodes",
@@ -53,162 +32,304 @@ export default function Home() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "Hall of Codes",
-    url: "https://hallofcodes.github.io",
-    description:
-      "Hall of Codes is a community of developers who are passionate about coding and technology.",
+    url: "https://hallofcodes.vercel.app",
+    inLanguage: "en",
+  };
+
+  const graph = {
+    "@context": "https://schema.org",
+    "@graph": [organization, webSite],
   };
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(organization),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }}
       />
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(webSite),
-        }}
-      />
-
-      <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
-        <a
-          href="https://github.com/hallofcodes"
-          className="inline-flex justify-between items-center py-1 px-1 pe-4 mb-7 text-sm text-blue-700 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-800"
+      <section
+        className="relative min-h-screen bg-black text-white overflow-hidden"
+        aria-label="Hero"
+      >
+        <video
+          className="absolute inset-0 w-full h-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          data-aos="fade-in"
+          data-aos-duration="2000"
         >
-          <span className="text-xs bg-blue-600 rounded-full text-white px-4 py-1.5 me-3">
-            Hello
-          </span>
-          <span className="text-sm font-medium">Follow us on GitHub</span>
-          <svg
-            className="w-2.5 h-2.5 ms-2 rtl:rotate-180"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 6 10"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="m1 9 4-4-4-4"
-            />
-          </svg>
-        </a>
-        <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
-            Mergin Programmers
-          </span>
-          &nbsp; Beyond Conflicts.
-        </h1>
-        <p className="my-4 text-lg text-gray-500">
-          We revolutionizes development by fostering cohesion among teams,
-          transcending conflicts to drive collective innovation. Harnessing the
-          synergy of diverse talents, we pave the way for seamless
-          collaboration, ensuring projects thrive in an environment of unity and
-          progress.
-        </p>
-        <p className="mb-4 text-lg font-normal text-gray-500 dark:text-gray-400">
-          Join us in revolutionizing the landscape of programming, where
-          conflicts dissolve, and collaboration flourishes. Experience the
-          synergy of innovation and unity with Hall of Codes.
-        </p>
-        <Link
-          href="https://github.com/hallofcodes/join"
-          className="inline-flex items-center text-lg text-blue-600 dark:text-blue-500 hover:underline"
-        >
-          Invite me
-          <svg
-            className="w-3.5 h-3.5 ms-2 rtl:rotate-180"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 14 10"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M1 5h12m0 0L9 1m4 4L9 9"
-            />
-          </svg>
-        </Link>
-      </div>
+          <source src="/hero.mp4" type="video/mp4" />
+        </video>
 
-      <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
-        <div className="mx-auto max-w-screen-xl my-auto text-center lg:py-16">
-          <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-            Why Hall of Codes?
-          </h1>
-          <p className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-400">
-            Be part of a vibrant community where innovation thrives and
-            collaboration is key. With access to cutting-edge projects and a
-            supportive network, you&apos;ll accelerate your growth and make a
-            real impact in the world of technology.
-          </p>
-          <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
-            <Link
-              href="https://github.com/hallofcodes/join"
-              className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900"
-            >
-              Get started
-              <svg
-                className="w-3.5 h-3.5 ms-2 rtl:rotate-180"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 14 10"
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/70" />
+
+        <div className="relative z-10 min-h-screen flex items-end justify-start">
+          <div className="max-w-3xl px-6 pb-16 text-left">
+            <ScrambleText
+              as="h1"
+              text="Hall of Codes"
+              durationMs={2000}
+              className="text-4xl sm:text-6xl font-bold tracking-tight mb-4"
+              aria-label="Hall of Codes - Merging Programmers Beyond Conflicts"
+            />
+            <p className="text-lg sm:text-2xl text-gray-200 mb-4">
+              Merging Programmers Beyond Conflicts
+            </p>
+            <p className="text-sm sm:text-base text-gray-300 max-w-2xl mb-6">
+              We revolutionize development by fostering cohesion among teams,
+              transcending conflicts to drive collective innovation. Harnessing
+              the synergy of diverse talents, we pave the way for seamless
+              collaboration, ensuring projects thrive in an environment of unity
+              and progress.
+            </p>
+
+            <div className="flex items-center gap-4">
+              <Link
+                href="/members"
+                className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-3 px-5 rounded-md font-semibold"
               >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M1 5h12m0 0L9 1m4 4L9 9"
-                />
-              </svg>
+                View Members
+              </Link>
+              <Link
+                href="/projects"
+                className="inline-flex items-center gap-2 border border-white/30 text-white/90 py-3 px-5 rounded-md hover:bg-white/10"
+              >
+                View Projects
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        className="min-h-screen flex items-center bg-white dark:bg-gray-900"
+        data-aos="fade-up"
+      >
+        <div className="max-w-6xl mx-auto px-6 py-20 grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="flex flex-col justify-center">
+            <ScrambleText
+              as="h2"
+              text="About Hall of Codes"
+              durationMs={2000}
+              className="text-3xl font-semibold mb-4 text-gray-900 dark:text-white"
+              aria-label="About Hall of Codes - Merging Programmers Beyond Conflicts"
+            />
+
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+              Hall of Codes is an inclusive community of developers and
+              contributors who believe collaboration outperforms conflict. We
+              bring together diverse skillsets and perspectives to solve real
+              problems, mentor newcomers, and ship sustainable open-source
+              projects.
+            </p>
+            <p className="text-gray-600 dark:text-gray-400">
+              Our mission: improve developer collaboration, reduce friction, and
+              create an ecosystem where ideas can grow into impactful projects.
+            </p>
+
+            <div>
+              <Link
+                href="https://github.com/hallofcodes/join"
+                className="inline-flex items-center gap-2 mt-6 text-sm bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
+              >
+                <FontAwesomeIcon icon={faGithub} />
+                Join Github Organization
+              </Link>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium text-gray-800 dark:text-gray-200">
+              Milestones
+            </h3>
+            <ul className="space-y-4">
+              {timeline.map((timeline: TimelineEntry, index: number) => (
+                <TimelineCard key={index} timeline={timeline} />
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section
+        className="min-h-screen flex items-center bg-gray-50 dark:bg-gray-800"
+        data-aos="fade-up"
+      >
+        <div className="max-w-6xl mx-auto px-6 py-20">
+          <ScrambleText
+            as="h2"
+            text="Some of Our Members"
+            durationMs={2000}
+            className="text-3xl font-semibold text-gray-900 dark:text-white mb-8"
+            aria-label="Some of Our Members - Merging Programmers Beyond Conflicts"
+          />
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6 gap-6">
+            {members.slice(0, 12).map((member: Member, index: number) => (
+              <MemberCard key={index} member={member} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section
+        className="min-h-screen flex items-center bg-white dark:bg-gray-900"
+        data-aos="fade-up"
+      >
+        <div className="max-w-6xl mx-auto px-6 py-20">
+          <ScrambleText
+            as="h2"
+            text="Some of Our Projects"
+            durationMs={2000}
+            className="text-3xl font-semibold text-gray-900 dark:text-white mb-8"
+            aria-label="Some of Our Projects - Merging Programmers Beyond Conflicts"
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {repositories.slice(0, 6).map((repository: Repo, index: number) => (
+              <ProjectCard key={index} project={repository} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section
+        className="min-h-screen flex items-center bg-gray-50 dark:bg-gray-800"
+        data-aos="fade-up"
+      >
+        <div className="max-w-6xl mx-auto px-6 py-20">
+          <div className="flex flex-col lg:flex-row gap-10 items-center">
+            <div className="lg:w-2/5">
+              <p className="text-xs uppercase tracking-[0.3em] text-blue-600 dark:text-blue-400 font-semibold">
+                Our North Star
+              </p>
+
+              <ScrambleText
+                as="h2"
+                text="Mission & Vision"
+                durationMs={2000}
+                className="text-3xl sm:text-4xl font-semibold text-gray-900 dark:text-white mt-3 mb-4"
+                aria-label="Mission & Vision - Merging Programmers Beyond Conflicts"
+              />
+
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                We turn late-night ideas into morning launches. Hall of Codes is
+                where builders meet, momentum stacks, and the only drama is how
+                fast we ship.
+              </p>
+              <div className="mt-8 grid grid-cols-2 gap-4">
+                <div className="rounded-xl bg-white dark:bg-gray-900 p-4 border border-gray-100 dark:border-gray-800">
+                  <div className="text-2xl font-semibold text-gray-900 dark:text-white">
+                    100+
+                  </div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                    Collaborations sparked
+                  </div>
+                </div>
+                <div className="rounded-xl bg-white dark:bg-gray-900 p-4 border border-gray-100 dark:border-gray-800">
+                  <div className="text-2xl font-semibold text-gray-900 dark:text-white">
+                    24/7
+                  </div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                    Ideas in motion
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:w-3/5 grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+              <article className="group rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm hover:shadow-lg transition-all">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 flex items-center justify-center">
+                    <FontAwesomeIcon icon={faPerson} />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                    Mission
+                  </h3>
+                </div>
+                <p className="mt-4 text-gray-600 dark:text-gray-300 leading-relaxed">
+                  Build a frictionless playground where developers collaborate
+                  instead of collide. We champion clarity, empathy, and shipping
+                  together—because great code deserves a great community.
+                </p>
+                <ul className="mt-4 space-y-2 text-sm text-gray-500 dark:text-gray-400">
+                  <li className="flex items-center gap-2">
+                    <span className="h-2 w-2 rounded-full bg-blue-500" />
+                    Reduce conflict, amplify output
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-2 w-2 rounded-full bg-blue-500" />
+                    Mentor fast, iterate faster
+                  </li>
+                </ul>
+              </article>
+
+              <article className="group rounded-2xl border border-gray-200 dark:border-gray-800 bg-gradient-to-br from-blue-600 to-indigo-600 p-6 shadow-sm hover:shadow-lg transition-all text-white">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-full bg-white/20 text-white flex items-center justify-center">
+                    <FontAwesomeIcon icon={faStar} />
+                  </div>
+                  <h3 className="text-xl font-semibold">Vision</h3>
+                </div>
+                <p className="mt-4 text-white/90 leading-relaxed">
+                  A global network of builders where collaboration is the
+                  default, not the exception. We’re aiming for a future where
+                  every idea has a team and every team has a launchpad.
+                </p>
+                <ul className="mt-4 space-y-2 text-sm text-white/80">
+                  <li className="flex items-center gap-2">
+                    <span className="h-2 w-2 rounded-full bg-white" />
+                    Community-first innovation
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="h-2 w-2 rounded-full bg-white" />
+                    Open-source as the heartbeat
+                  </li>
+                </ul>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white"
+        data-aos="fade-up"
+      >
+        <div className="max-w-3xl text-center px-6 py-20">
+          <ScrambleText
+            as="h2"
+            text="Join Hall of Codes"
+            durationMs={2000}
+            className="text-3xl sm:text-4xl font-bold mb-4"
+            aria-label="Join Hall of Codes - Merging Programmers Beyond Conflicts"
+          />
+
+          <p className="mb-6 text-gray-100">
+            Contribute, collaborate, and learn with fellow developers. Check our
+            GitHub organization and join our community.
+          </p>
+          <div className="flex items-center justify-center gap-4">
+            <a
+              href="https://github.com/hallofcodes"
+              target="_blank"
+              rel="noreferrer"
+              className="bg-white text-blue-700 px-5 py-3 rounded font-semibold hover:opacity-95"
+            >
+              GitHub Organization
+            </a>
+            <Link
+              href="/community"
+              className="border border-white/30 px-5 py-3 rounded hover:bg-white/5"
+            >
+              Community Page
             </Link>
           </div>
         </div>
-
-        <div className="mt-10">
-          <h2 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">
-            Timeline
-          </h2>
-
-          <ol className="relative border-s border-gray-200 dark:border-gray-700">
-            {timeline.map((item, index) => (
-              <li key={index} className="mb-10 ml-6">
-                <span className="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
-                  <svg
-                    className="w-3 h-3 text-blue-800 dark:text-blue-300"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm1.707 11.293a1 1 0 01-1.414 0L9 12.414l-.293.293a1 1 0 01-1.414-1.414l2-2a1 1 0 011.414 0l2 2a1 1 0 010 1.414zM10 7a1.5 1.5 0 110-3 1.5 1.5 0 010 3z" />
-                  </svg>
-                </span>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  {item.heading}
-                </h3>
-                <time className="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
-                  {item.date}
-                </time>
-                <p className="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">
-                  {item.description}
-                </p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </div>
+      </section>
     </>
   );
 }
