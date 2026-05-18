@@ -20,7 +20,7 @@ const portfolio = [
     title: "Full-Stack Engineer (Core Systems)",
     description:
       "Senior Full-Stack Developer specializing in high-performance architectures, scalable APIs, and real-time systems. Proven track record of building robust backend engines and modular developer tools from scratch.",
-    img_url: "https://raw.githubusercontent.com/dconco/dconco/refs/heads/main/public/portfolios/dconco.tech.png.png",
+    img_url: "https://raw.githubusercontent.com/dconco/dconco/refs/heads/main/public/portfolios/dconco.tech.png",
     link: "https://dconco.tech",
   },
 ];
