@@ -23,6 +23,22 @@ const portfolio: PortfolioItem[] = [
     img_url: "/portfolio/mra1k3r0.vercel.app.png",
     link: "https://mra1k3r0.vercel.app",
   },
+  {
+    name: "Jerome Edica",
+    title: "Full Stack Developer",
+    description:
+      "The full stack developer who can do it all. With a passion for both frontend and backend development, Jerome is a versatile developer who can handle any project.",
+    img_url: "/portfolio/jeromeedica.vercel.app.png",
+    link: "https://jeromeedica.vercel.app",
+  },
+  {
+    name: "John Relix",
+    title: "Developer | Cybersecurity Researcher | Data Analyst",
+    description:
+      "The developer who wears many hats. With a passion for cybersecurity and data analysis, John is a developer who can also help you secure your applications and analyze your data.",
+    img_url: "/portfolio/johnrelixdev.vercel.app.png",
+    link: "https://johnrelixdev.vercel.app",
+  },
 ];
 
 export default portfolio;
