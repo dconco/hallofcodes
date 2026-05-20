@@ -11,10 +11,13 @@ import timeline, { TimelineEntry } from "@/lib/timeline";
 import TimelineCard from "@/components/ui/TimelineCard";
 import { getRecentPosts, PostEntry } from "@/lib/posts";
 import BlogCard from "@/components/ui/BlogCard";
+import { fetchTrackedMembers } from "@/lib/wakatime/leaderboards";
+import HallOfFame from "./components/HallOfFame";
 
 export default async function Home() {
-  const [members, repositories, posts] = await Promise.all([
+  const [members, getLeaderboards, repositories, posts] = await Promise.all([
     getMembers(),
+    fetchTrackedMembers(),
     getRepositories(),
     getRecentPosts(4),
   ]);
@@ -211,6 +214,12 @@ Mentorship drives velocity.`}
       </section>
 
       <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent pointer-events-none" />
+
+      <section className="min-h-screen flex items-center bg-gray-800">
+        <div className="max-w-6xl mx-auto px-6 py-20">
+          <HallOfFame members={getLeaderboards} />
+        </div>
+      </section>
 
       <section className="min-h-screen flex items-center bg-gray-800">
         <div className="max-w-6xl mx-auto px-6 py-20">
