@@ -9,6 +9,8 @@ import NextTopLoader from "nextjs-toploader";
 import ScrollTop from "@/components/ui/ScrollTop";
 import AOSWrapper from "@/components/shared/AOSWrapper";
 import { getRecentPosts } from "@/lib/posts";
+import { getMessages } from "next-intl/server";
+import { NextIntlClientProvider } from "next-intl";
 
 config.autoAddCss = false;
 
@@ -97,12 +99,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const posts = getRecentPosts(5);
+  const messages = await getMessages();
 
   return (
     <html
@@ -115,15 +118,18 @@ export default function RootLayout({
       </Head>
       <body className="antialiased">
         <AOSWrapper />
-        <Nav />
 
-        <NextTopLoader showSpinner={false} />
+        <NextIntlClientProvider messages={messages}>
+          <Nav />
 
-        <main>{children}</main>
+          <NextTopLoader showSpinner={false} />
 
-        <ScrollTop />
+          <main>{children}</main>
 
-        <Footer posts={posts} />
+          <ScrollTop />
+
+          <Footer posts={posts} />
+        </NextIntlClientProvider>
       </body>
     </html>
   );
