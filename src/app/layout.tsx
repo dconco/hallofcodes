@@ -50,6 +50,14 @@ export const metadata: Metadata = {
   creator: "Melvin Jones Repol",
   alternates: {
     canonical: "https://www.hallofcodes.org/",
+    types: {
+      "application/rss+xml": [
+        {
+          title: "RSS Feed",
+          url: "/rss.xml",
+        },
+      ],
+    },
   },
   openGraph: {
     title: "Hall of Codes - Merging Programmers Beyond Conflicts",
